@@ -6,7 +6,7 @@
   <title>Aetherfall</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@500;700&display=swap');
-    :html,body{width:100%;height:100%;overflow:hidden;margin:0;background:#07110e;font-family:Inter,sans-serif;color:#fff;touch-action:none}
+    html,body{width:100%;height:100%;overflow:hidden;margin:0;background:#07110e;font-family:Inter,sans-serif;color:#fff;touch-action:none}
     canvas{display:block;width:100%;height:100%}
     #hud{position:fixed;inset:0;pointer-events:none}
     .topbar{position:absolute;top:18px;left:22px;display:flex;align-items:center;gap:12px}
@@ -79,7 +79,6 @@
 
     const clock=new THREE.Clock();function animate(){requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);if(started){let dx=0,dz=0;if(keys.w||keys.arrowup)dz-=1;if(keys.s||keys.arrowdown)dz+=1;if(keys.a||keys.arrowleft)dx-=1;if(keys.d||keys.arrowright)dx+=1;if(dx||dz){const len=Math.hypot(dx,dz);dx/=len;dz/=len;const sin=Math.sin(yaw),cos=Math.cos(yaw);const vx=(dx*cos-dz*sin)*7*dt,vz=(dx*sin+dz*cos)*7*dt;player.position.x+=vx;player.position.z+=vz;distance+=Math.hypot(vx,vz);player.position.x=Math.max(-75,Math.min(75,player.position.x));player.position.z=Math.max(-75,Math.min(75,player.position.z));const target=Math.atan2(vx,vz);let diff=((target-player.rotation.y+Math.PI)% (Math.PI*2))-Math.PI;player.rotation.y+=diff*Math.min(1,dt*12);legs[0].rotation.x=Math.sin(distance*3)*.35;legs[1].rotation.x=-Math.sin(distance*3)*.35}else{legs.forEach(l=>l.rotation.x*=.85)}}
       for(const g of enemies){if(!g.visible||g.userData.hp<=0)continue;g.lookAt(player.position.x,g.position.y,player.position.z);const d=g.position.distanceTo(player.position);if(d<13&&d>2){g.position.addScaledVector(new THREE.Vector3().subVectors(player.position,g.position).normalize(),dt*.9)}if(d<1.6){hp-=dt*7;document.getElementById('hpfill').style.width=Math.max(0,hp)+'%';if(hp<=0){hp=100;player.position.set(0,0,0)}}}
-    }
     const target=player.position.clone();const camOffset=new THREE.Vector3(0,5.5,9).applyAxisAngle(new THREE.Vector3(1,0,0),pitch);camOffset.applyAxisAngle(new THREE.Vector3(0,1,0),yaw);camera.position.copy(player.position).add(camOffset);camera.lookAt(player.position.x,2,player.position.z);
     renderer.render(scene,camera)}animate();
   </script>
